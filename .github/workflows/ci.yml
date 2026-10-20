@@ -1,0 +1,31 @@
+name: FirstRun CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify README setup commands and action bundle
+    runs-on: ubuntu-24.04
+    steps:
+      # actions/checkout v7.0.1; credentials are not persisted in the checkout.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      # Keep this first: it checks the README on a clean runner before build tooling is installed.
+      - name: Run FirstRun against this README
+        uses: ./
+      - name: Install development dependencies
+        run: npm ci
+      - name: Build bundled action
+        run: npm run build
+      - name: Check bundled action is current
+        run: git diff --exit-code -- dist
+      - name: Lint source
+        run: npm run lint
+

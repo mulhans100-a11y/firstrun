@@ -1,0 +1,23 @@
+name: FirstRun
+description: Run explicitly marked README setup commands on Ubuntu.
+author: mulhans100-a11y
+inputs:
+  readme-path:
+    description: README file path, relative to the checked-out workspace.
+    required: false
+    default: README.md
+  working-directory:
+    description: Directory where marked commands run, relative to the checked-out workspace.
+    required: false
+    default: .
+  timeout-minutes:
+    description: Maximum total runtime for all marked commands, in minutes (1-360).
+    required: false
+    default: '10'
+runs:
+  using: node24
+  main: dist/index.mjs
+branding:
+  icon: play-circle
+  color: green
+
